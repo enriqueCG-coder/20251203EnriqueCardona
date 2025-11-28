@@ -1,0 +1,30 @@
+﻿/* Navbar azul-verde */
+.navbar-custom {
+    background: linear-gradient(90deg, #00796b, #26a69a); /* degradado verde-azul */
+}
+
+    .navbar-custom .nav-link,
+    .navbar-custom .navbar-brand,
+    .navbar-custom .dropdown-toggle {
+        color: #fff;
+        font-weight: 500;
+    }
+
+        .navbar-custom .nav-link:hover,
+        .navbar-custom .dropdown-item:hover {
+            color: #c2f0e3; /* verde claro al pasar el mouse */
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+        }
+
+.dropdown-menu {
+    background-color: #00796b; /* fondo del dropdown */
+}
+
+    .dropdown-menu .dropdown-item {
+        color: #fff;
+    }
+
+        .dropdown-menu .dropdown-item:hover {
+            background-color: #26a69a;
+        }

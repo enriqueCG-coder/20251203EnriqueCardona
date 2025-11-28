@@ -1,0 +1,83 @@
+﻿@using PruebaTec.WEB.APIClient.DTO
+@model PruebaTec.WEB.APIClient.DTO.Requests.ProductoRequestDTO
+@using PruebaTec.WEB.APIClient.DTO.Requests
+
+@{
+    ViewData["Title"] = "Crear Producto";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Nuevo Producto</h2>
+
+    <form id="crearProductoForm" asp-action="Crear" method="post" enctype="multipart/form-data">
+
+        <div class="mb-3">
+            <label asp-for="Nombre" class="form-label">Nombre</label>
+            <input asp-for="Nombre" class="form-control" />
+            <span asp-validation-for="Nombre" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Descripcion" class="form-label">Descripcion</label>
+            <input asp-for="Descripcion" class="form-control" />
+            <span asp-validation-for="Descripcion" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Precio" class="form-label">Precio</label>
+            <input asp-for="Precio" class="form-control" type="number" step="0.01" />
+            <span asp-validation-for="Precio" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Imagen" class="form-label">Imagen del Producto</label>
+            <input asp-for="Imagen" type="file" class="form-control" />
+            <span asp-validation-for="Imagen" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.getElementById('crearProductoForm').addEventListener('submit', function (e) {
+            e.preventDefault(); // Detiene el envío por defecto
+
+            Swal.fire({
+                title: 'Guardando producto...',
+                text: 'Por favor espera un momento.',
+                icon: 'info',
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            // Espera un momento para mostrar el alert, luego envía el formulario
+            setTimeout(() => {
+                e.target.submit();
+            }, 1000);
+        });
+    </script>
+
+    @if (TempData["AlertaMensaje"] != null)
+    {
+        <script>
+            Swal.fire({
+                icon: '@TempData["AlertaTipo"]',
+                title: '@TempData["AlertaMensaje"]',
+                showConfirmButton: false,
+                timer: 2000
+            });
+        </script>
+    }
+}
+

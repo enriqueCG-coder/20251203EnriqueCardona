@@ -1,0 +1,124 @@
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core
+@model IPagedList<PruebaTec.WEB.APIClient.DTO.Responses.ProductoResponseDTO>
+
+@{
+    ViewData["Title"] = "Gestión de Productos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Gestión de Productos</h2>
+
+    <div class="d-flex justify-content-between mb-3">
+        <form method="get" asp-action="Index" class="d-flex">
+            <input type="text" name="search" class="form-control me-2" placeholder="Buscar producto..." value="@ViewData["Search"]?.ToString()" />
+            <button type="submit" class="btn btn-outline-primary">Buscar</button>
+        </form>
+        <a class="btn btn-success" asp-action="Crear">+ Nuevo Producto</a>
+    </div>
+
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Codigo Producto</th>
+                <th>Nombre</th>
+                <th>Descripcion</th>
+                <th>Precio</th>
+                <th>Imagen</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Any())
+            {
+                foreach (var producto in Model)
+                {
+                    <tr>
+                        <td>@producto.Id</td>
+                        <td>@producto.Nombre</td>
+                        <td>@producto.Descripcion</td>
+                        <td>$@producto.Precio.ToString("F2")</td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(producto.ImagenBase64))
+                            {
+                                <img src="data:image/png;base64,@producto.ImagenBase64" width="80" height = "80" />
+
+                            }
+                            else
+                            {
+                                <span class="text-muted">Sin imagen</span>
+                            }
+                        </td>
+                        <td>
+                            <a asp-action="Editar" asp-route-id="@producto.Id" class="btn btn-sm btn-warning me-1">Editar</a>
+                            <a href="#" class="btn btn-sm btn-danger eliminar-btn" data-id="@producto.Id">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="3" class="text-center">No se encontraron productos.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="d-flex justify-content-center mt-4">
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, search = ViewData["Search"] }),
+                 new PagedListRenderOptions
+        {
+            DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+            DisplayLinkToLastPage = PagedListDisplayMode.Always,
+            DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+            DisplayLinkToNextPage = PagedListDisplayMode.Always,
+            DisplayLinkToIndividualPages = true,
+            DisplayPageCountAndCurrentLocation = false,
+            UlElementClasses = new[] { "pagination" },
+            LiElementClasses = new[] { "page-item" },
+            PageClasses = new[] { "page-link" }
+        })
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.querySelectorAll('.eliminar-btn').forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                const id = this.dataset.id;
+
+                Swal.fire({
+                    title: '¿Estás seguro?',
+                    text: 'Esta acción eliminará el producto permanentemente.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = `/Producto/Eliminar/${id}`;
+                    }
+                });
+            });
+        });
+    </script>
+
+    @if (TempData["AlertaMensaje"] != null)
+    {
+        <script>
+            Swal.fire({
+                icon: '@TempData["AlertaTipo"]',
+                title: '@TempData["AlertaMensaje"]',
+                showConfirmButton: false,
+                timer: 2000
+            });
+        </script>
+    }
+}

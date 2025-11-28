@@ -1,0 +1,74 @@
+﻿@using PruebaTec.WEB.APIClient.DTO
+@model PruebaTec.WEB.APIClient.DTO.Requests.UsuarioRequestDTO
+@using PruebaTec.WEB.APIClient.DTO.Requests
+
+@{
+    ViewData["Title"] = "Editar Usuario";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <h2>Editar Usuario</h2>
+
+    <form id="editarUsuarioForm" asp-action="Editar" method="post">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="mb-3">
+            <label class="form-label">Nombre</label>
+            <input asp-for="Nombre" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Nueva Contraseña (opcional)</label>
+            <input asp-for="Pwd" class="form-control" type="password" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Rol</label>
+            <select asp-for="Rol" class="form-control" asp-items="Html.GetEnumSelectList<Rol>()"></select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Actualizar</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.getElementById('editarUsuarioForm').addEventListener('submit', function (e) {
+            e.preventDefault(); // Detiene el envío por defecto
+
+            Swal.fire({
+                title: 'Actualizando usuario...',
+                text: 'Por favor espera un momento.',
+                icon: 'info',
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            // Espera un momento para mostrar el alert, luego envía el formulario
+            setTimeout(() => {
+                e.target.submit();
+            }, 1000);
+        });
+    </script>
+
+    @if (TempData["AlertaMensaje"] != null)
+    {
+        <script>
+            Swal.fire({
+                icon: '@TempData["AlertaTipo"]',
+                title: '@TempData["AlertaMensaje"]',
+                showConfirmButton: false,
+                timer: 2000
+            });
+        </script>
+    }
+}
+

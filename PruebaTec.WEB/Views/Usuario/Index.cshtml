@@ -1,0 +1,148 @@
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core
+@model IPagedList<PruebaTec.WEB.APIClient.DTO.Responses.UsuarioResponseDTO>
+@{
+    ViewData["Title"] = "Gestión de Usuarios";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Gestión de Usuarios</h2>
+
+    <div class="d-flex justify-content-between mb-3">
+        <form method="get" asp-action="Index" class="d-flex">
+            <input type="text" name="search" class="form-control me-2" placeholder="Buscar usuario..." value="@ViewData["Search"]?.ToString()" />
+            <button type="submit" class="btn btn-outline-primary">Buscar</button>
+        </form>
+        <a class="btn btn-success" asp-action="Crear">+ Nuevo Usuario</a>
+    </div>
+
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Nombre</th>
+                <th>Clave</th>
+                <th>Rol</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Any())
+            {
+                foreach (var usuario in Model)
+                {
+                    <tr>
+                        <td>@usuario.Nombre</td>
+                        <td>**********</td>
+                        <td>@usuario.Rol</td>
+                        <td>
+                            @if (usuario.IsActive)
+                            {
+                                <span class="badge bg-success">Activo</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Inactivo</span>
+                            }
+                        </td>
+                        <td>
+                            <a asp-action="Editar" asp-route-id="@usuario.Id" class="btn btn-sm btn-warning me-1">Editar</a>
+                            <a href="#" class="btn btn-sm btn-info toggle-btn me-1" data-id="@usuario.Id">
+                                @(usuario.IsActive ? "Desactivar" : "Activar")
+                            </a>
+                            <a href="#" class="btn btn-sm btn-danger eliminar-btn" data-id="@usuario.Id">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5" class="text-center">No se encontraron usuarios.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="d-flex justify-content-center mt-4">
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, search = ViewData["Search"] }),
+                 new PagedListRenderOptions
+        {
+            DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+            DisplayLinkToLastPage = PagedListDisplayMode.Always,
+            DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+            DisplayLinkToNextPage = PagedListDisplayMode.Always,
+            DisplayLinkToIndividualPages = true,
+            DisplayPageCountAndCurrentLocation = false,
+            UlElementClasses = new[] { "pagination" },
+            LiElementClasses = new[] { "page-item" },
+            PageClasses = new[] { "page-link" }
+        })
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.querySelectorAll('.eliminar-btn').forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                const id = this.dataset.id;
+
+                Swal.fire({
+                    title: '¿Estás seguro?',
+                    text: 'Esta acción eliminará el usuario permanentemente.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = `/Usuario/Eliminar/${id}`;
+                    }
+                });
+            });
+        });
+
+        document.querySelectorAll('.toggle-btn').forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                const id = this.dataset.id;
+
+                Swal.fire({
+                    title: '¿Confirmar cambio de estado?',
+                    text: 'El usuario será activado o desactivado.',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#17a2b8',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Sí, continuar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = `/Usuario/ToggleEstado/${id}`;
+                    }
+                });
+            });
+        });
+
+
+    </script>
+
+    @if (TempData["AlertaMensaje"] != null)
+    {
+        <script>
+            Swal.fire({
+                icon: '@TempData["AlertaTipo"]',
+                title: '@TempData["AlertaMensaje"]',
+                showConfirmButton: false,
+                timer: 2000
+            });
+        </script>
+    }
+}
+

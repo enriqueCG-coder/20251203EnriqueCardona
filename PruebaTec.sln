@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PruebaTec.API", "PruebaTec.API\PruebaTec.API.csproj", "{A7C1F8DB-C273-42B2-8AEB-B8B84A6937E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PruebaTec.WEB", "PruebaTec.WEB\PruebaTec.WEB.csproj", "{4C78A4B6-BCEC-483B-A648-63D22C468417}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A7C1F8DB-C273-42B2-8AEB-B8B84A6937E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7C1F8DB-C273-42B2-8AEB-B8B84A6937E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7C1F8DB-C273-42B2-8AEB-B8B84A6937E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7C1F8DB-C273-42B2-8AEB-B8B84A6937E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C78A4B6-BCEC-483B-A648-63D22C468417}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C78A4B6-BCEC-483B-A648-63D22C468417}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C78A4B6-BCEC-483B-A648-63D22C468417}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C78A4B6-BCEC-483B-A648-63D22C468417}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D2FA0DC2-71A3-4050-AE87-792BB9A26562}
+	EndGlobalSection
+EndGlobal

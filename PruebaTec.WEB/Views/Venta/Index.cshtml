@@ -1,0 +1,89 @@
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core
+@model IPagedList<PruebaTec.WEB.APIClient.DTO.Responses.VentaResponseDTO>
+
+@{
+    ViewData["Title"] = "Ventas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="mb-0">Listado de Ventas</h2>
+
+            <form asp-action="Crear" asp-controller="Venta" method="post">
+                <button type="submit" class="btn btn-success">
+                    + Nueva Venta
+                </button>
+            </form>
+        </div>
+
+        <table class="table table-bordered table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Código</th>
+                    <th>Fecha</th>
+                    <th>Usuario</th>
+                    <th>Total</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var venta in Model)
+                {
+                    <tr>
+                        <td>@venta.Codigo.ToUpper()</td>
+                        <td>@venta.Fecha.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td>@venta.NombreUsuario</td>
+                        <td>$@venta.Total.ToString("F2")</td>
+                        <td>@venta.Estado</td>
+                        <td>
+                            @if (venta.Estado == "Pendiente")
+                            {
+                                <a asp-controller="DetalleVenta" asp-action="Index" asp-route-idVenta="@venta.Id" class="btn btn-sm btn-primary">
+                                    Ver Detalle
+                                </a>
+                            }
+                            else
+                            {
+                                <span class="text-muted">Finalizada</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="d-flex justify-content-center mt-4">
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions
+       {
+           DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+           DisplayLinkToLastPage = PagedListDisplayMode.Always,
+           DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+           DisplayLinkToNextPage = PagedListDisplayMode.Always,
+           DisplayLinkToIndividualPages = true,
+           MaximumPageNumbersToDisplay = 5,
+           UlElementClasses = new[] { "pagination" },
+           LiElementClasses = new[] { "page-item" },
+           PageClasses = new[] { "page-link" }
+       })
+        </div>
+    </div>
+
+    @section Scripts {
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        @if (TempData["AlertaMensaje"] != null)
+        {
+            <script>
+                Swal.fire({
+                    icon: '@TempData["AlertaTipo"]',
+                    title: '@TempData["AlertaMensaje"]',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            </script>
+        }
+    }

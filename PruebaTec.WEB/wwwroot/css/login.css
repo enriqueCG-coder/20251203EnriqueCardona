@@ -1,0 +1,66 @@
+﻿/* Fondo con blur */
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+    background: url('/fondo.jpg') no-repeat center center fixed;
+    background-size: cover;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+    body::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background: url('/fondo.jpg') no-repeat center center fixed;
+        background-size: cover;
+        filter: blur(5px);
+        z-index: -1;
+    }
+
+/* Login card */
+.login-card {
+    background-color: rgba(224, 247, 250, 0.9); /* azul claro semi-transparente */
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    width: 350px;
+    position: relative;
+    z-index: 1;
+}
+
+    .login-card h3 {
+        color: #00796b; /* verde oscuro */
+    }
+
+    .login-card .form-control {
+        border: 2px solid #4db6ac; /* verde suave */
+        background-color: #ffffff;
+        border-radius: 8px;
+    }
+
+        .login-card .form-control:focus {
+            border-color: #00796b;
+            box-shadow: 0 0 5px #4db6ac;
+        }
+
+.btn-login {
+    background: linear-gradient(90deg, #00796b, #26a69a); /* degradado verde-azul */
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+    .btn-login:hover {
+        background: linear-gradient(90deg, #26a69a, #00796b);
+    }
